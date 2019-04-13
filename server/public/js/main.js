@@ -24,8 +24,17 @@ window.addEventListener('load', event => {
     })
   })
 
-  // Emit answer to server
-  socket.on('hello', time => {
-    console.log(time)
-  })
+  const guessForm = document.getElementById('guess-form')
+  const guessInput = document.getElementById('guess-input')
+
+  const sendMessage = event => {
+    event.preventDefault()
+    console.log(guessInput.value)
+    socket.emit('input-guess', guessInput.value)
+    guessInput.value = ''
+  }
+
+  guessForm.addEventListener('submit', sendMessage)
+
+  console.dir(form)
 })

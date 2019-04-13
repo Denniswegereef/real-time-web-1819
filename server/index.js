@@ -12,11 +12,12 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
 const spotifyApiClass = require('./controllers/spotify_api')
+const userDiff = require('./controllers/userDiff')
 
 const port = 5555
 
 const config = {
-  duration: 1000 // In seconds
+  duration: 3000 // In seconds
 }
 
 app.engine(
@@ -40,17 +41,18 @@ app.set('views', __dirname + '/views')
 let spotifyApi = new spotifyApiClass({
   clientId: process.env.SPOTIFY_clientId,
   clientSecret: process.env.SPOTIFY_clientSecret,
-  playlistId: '6WSvY6OiWugHEFtpwajKas'
+  playlistId: '3WFMtlxT9NW5rgkZCpbxKG'
 }).then(res => {
   console.log(chalk.yellow('Finished getting playlist'))
   // Start loop
   getLoopTracks(res)
+  return res
 })
 
 // Repeatable function for getting new tracks
 const getLoopTracks = scope => {
   console.log('--')
-  console.log(chalk.red('Currently in scope:'))
+  console.log(chalk.cyan('Currently in scope:'))
   let newTrack = scope.getRandomTrack()
   console.log(chalk.yellow(`New track: ${newTrack.track.name}`))
 
@@ -73,7 +75,12 @@ const getLoopTracks = scope => {
 io.on('connection', socket => {
   console.log(chalk.blue('A user connected'))
 
-  socket.on('disconnect', function() {
+  socket.on('input-guess', async guessMessage => {
+    scope = await spotifyApi
+    userDiff(guessMessage, scope.currentTrack)
+  })
+
+  socket.on('disconnect', () => {
     io.emit(chalk.red('A user disconnected'))
   })
 })

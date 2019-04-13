@@ -8,8 +8,8 @@ module.exports = class spotifyApiClass {
     this.playlistId = obj.playlistId
     this.url = 'https://api.spotify.com/v1'
     this.playedCache = []
-    this.currentOffset = 0
     this.cachePlaylist
+    this.currentTrack
 
     return new Promise(resolve => {
       this.createToken().then(async res => {
@@ -75,29 +75,6 @@ module.exports = class spotifyApiClass {
     })
   }
 
-  getRaasdndomTrack() {
-    return this.getRandom(this.playlistData.tracks.items)
-  }
-
-  getRasdfandom(arr) {
-    let temp = arr[Math.floor(Math.random() * arr.length)]
-
-    // Check if preview is avaliable
-    if (temp.track.preview_url !== null && temp.track.id) {
-      // Check if not in cache
-      if (!this.playedCache.includes(temp.track.id)) {
-        this.playedCache.push(temp.track.id)
-
-        return temp
-      } else {
-        console.log(chalk.red('All songs used from this playlist'))
-        this.playedCache = []
-      }
-    }
-
-    return this.getRandom(this.playlistData.tracks.items)
-  }
-
   filterOnPreview(arr) {
     this.cachePlaylist.tracks.items = arr.filter(
       track => track.track.preview_url !== null
@@ -111,6 +88,7 @@ module.exports = class spotifyApiClass {
 
     if (!this.playedCache.includes(temp.track.id)) {
       this.playedCache.push(temp.track.id)
+      this.currentTrack = temp
       return temp
     }
 
@@ -122,6 +100,5 @@ module.exports = class spotifyApiClass {
   async init() {
     await this.getAllTracks()
     this.filterOnPreview(this.cachePlaylist.tracks.items)
-    // this.getRandom(this.cachePlaylist.tracks.items)
   }
 }

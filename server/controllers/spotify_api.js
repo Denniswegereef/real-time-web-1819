@@ -7,6 +7,9 @@ module.exports = class spotifyApiClass {
     this.clientSecret = obj.clientSecret
     this.playlistId = obj.playlistId
     this.url = 'https://api.spotify.com/v1'
+    this.playedCache = []
+    this.currentOffset = 0
+    this.cachePlaylist
 
     return new Promise(resolve => {
       this.createToken().then(async res => {
@@ -34,15 +37,16 @@ module.exports = class spotifyApiClass {
     })
       .then(res => {
         this.token = res.data
+        return
       })
       .catch(error => console.error(error))
   }
 
-  async getTracks(url) {
+  getTrackPage(url) {
     console.log(chalk.red('Getting tracks'))
 
-    return await axios({
-      url: this.url + `/playlists/${this.playlistId}`,
+    return axios({
+      url: url ? url : this.url + `/playlists/${this.playlistId}`,
       headers: {
         Authorization: `${this.token.token_type} ${this.token.access_token}`
       }
@@ -51,24 +55,73 @@ module.exports = class spotifyApiClass {
       .catch(err => console.error(err))
   }
 
-  getRandomTrack() {
+  async getAllTracks(url) {
+    if (!this.cachePlaylist) {
+      this.cachePlaylist = await this.getTrackPage()
+      return this.getAllTracks(this.cachePlaylist.tracks.next)
+    }
+
+    if (url) {
+      let data = await this.getTrackPage(url)
+
+      this.cachePlaylist.tracks.items = this.cachePlaylist.tracks.items.concat(
+        data.items
+      )
+      return this.getAllTracks(data.next)
+    }
+
+    return new Promise((resolve, reject) => {
+      resolve()
+    })
+  }
+
+  getRaasdndomTrack() {
     return this.getRandom(this.playlistData.tracks.items)
   }
 
-  getRandom(arr) {
+  getRasdfandom(arr) {
     let temp = arr[Math.floor(Math.random() * arr.length)]
 
     // Check if preview is avaliable
-    if (temp.track.preview_url !== null) {
-      console.log(chalk.yellow('preview url avaliable'))
-      return temp
+    if (temp.track.preview_url !== null && temp.track.id) {
+      // Check if not in cache
+      if (!this.playedCache.includes(temp.track.id)) {
+        this.playedCache.push(temp.track.id)
+
+        return temp
+      } else {
+        console.log(chalk.red('All songs used from this playlist'))
+        this.playedCache = []
+      }
     }
 
     return this.getRandom(this.playlistData.tracks.items)
   }
 
+  filterOnPreview(arr) {
+    this.cachePlaylist.tracks.items = arr.filter(
+      track => track.track.preview_url !== null
+    )
+  }
+
+  getRandomTrack(arr) {
+    let temp = this.cachePlaylist.tracks.items[
+      Math.floor(Math.random() * this.cachePlaylist.tracks.items.length)
+    ]
+
+    if (!this.playedCache.includes(temp.track.id)) {
+      this.playedCache.push(temp.track.id)
+      return temp
+    }
+
+    console.log(chalk.red('All songs used from this playlist'))
+    this.playedCache = []
+    return this.getRandomTrack()
+  }
+
   async init() {
-    this.playlistData = await this.getTracks()
-    this.randomSong = this.getRandom(this.playlistData.tracks.items)
+    await this.getAllTracks()
+    this.filterOnPreview(this.cachePlaylist.tracks.items)
+    // this.getRandom(this.cachePlaylist.tracks.items)
   }
 }

@@ -16,7 +16,7 @@ const spotifyApiClass = require('./controllers/spotify_api')
 const port = 5555
 
 const config = {
-  duration: 5000 // In seconds
+  duration: 1000 // In seconds
 }
 
 app.engine(
@@ -40,18 +40,17 @@ app.set('views', __dirname + '/views')
 let spotifyApi = new spotifyApiClass({
   clientId: process.env.SPOTIFY_clientId,
   clientSecret: process.env.SPOTIFY_clientSecret,
-  playlistId: '3WFMtlxT9NW5rgkZCpbxKG'
+  playlistId: '6WSvY6OiWugHEFtpwajKas'
 }).then(res => {
   console.log(chalk.yellow('Finished getting playlist'))
-
   // Start loop
-  repeatingFunc(res)
+  getLoopTracks(res)
 })
 
 // Repeatable function for getting new tracks
-const repeatingFunc = async scope => {
+const getLoopTracks = scope => {
+  console.log('--')
   console.log(chalk.red('Currently in scope:'))
-
   let newTrack = scope.getRandomTrack()
   console.log(chalk.yellow(`New track: ${newTrack.track.name}`))
 
@@ -68,7 +67,7 @@ const repeatingFunc = async scope => {
   )
 
   // Restart loop
-  setTimeout(() => repeatingFunc(scope), 5000)
+  setTimeout(() => getLoopTracks(scope), config.duration)
 }
 
 io.on('connection', socket => {

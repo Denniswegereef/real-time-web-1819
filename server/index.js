@@ -41,7 +41,7 @@ app.set('views', __dirname + '/views')
 let spotifyApi = new spotifyApiClass({
   clientId: process.env.SPOTIFY_clientId,
   clientSecret: process.env.SPOTIFY_clientSecret,
-  playlistId: '3WFMtlxT9NW5rgkZCpbxKG'
+  playlistId: '37i9dQZF1E9DQfR3vx4z4r'
 }).then(res => {
   console.log(chalk.yellow('Finished getting playlist'))
   // Start loop
@@ -49,12 +49,15 @@ let spotifyApi = new spotifyApiClass({
   return res
 })
 
+userDiff()
+
 // Repeatable function for getting new tracks
 const getLoopTracks = scope => {
-  console.log('--')
-  console.log(chalk.cyan('Currently in scope:'))
   let newTrack = scope.getRandomTrack()
-  console.log(chalk.yellow(`New track: ${newTrack.track.name}`))
+
+  //console.log('--')
+  //console.log(chalk.cyan('Currently in scope:'))
+  //console.log(chalk.yellow(`New track: ${newTrack.track.name}`))
 
   app.render(
     'partials/currentSong',
@@ -87,6 +90,11 @@ io.on('connection', socket => {
 
 app.get('/', (req, res) => {
   res.render('index', { single: spotifyApi.randomSong })
+})
+
+app.get('/data', async (req, res) => {
+  scope = await spotifyApi
+  res.send(scope.currentTrack)
 })
 
 app.get('/me', (req, res) => {

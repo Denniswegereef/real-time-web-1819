@@ -1,12 +1,3 @@
-<ul>
-    <li>Current song: {{ single.track.name }}</li>
-    <li>
-        Artists: {{#each single.track.artists}}
-        <span>{{this.name}}</span>
-        {{/each}}
-    </li>
-</ul>
-
 <audio controls="controls" autoplay loop>
     <source src="{{single.track.preview_url}}" type="audio/mpeg" />
 </audio>

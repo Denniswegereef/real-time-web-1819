@@ -1,0 +1,7 @@
+<li>
+    <img src="" alt="">
+    <p>Track: {{ single.track.name }}</p>
+    <p> Artists: {{#each single.track.artists}}
+        <span>{{this.name}}</span>
+        {{/each}}</p>
+</li>

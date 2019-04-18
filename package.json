@@ -29,12 +29,12 @@
     "animejs": "^3.0.1",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
-    "i": "^0.3.6",
-    "npm": "^6.9.0",
+    "firebase": "^5.9.4",
     "socket.io": "^2.2.0",
-    "spotify-web-api-node": "^4.0.0"
+    "string-similarity": "^3.0.0"
   },
   "devDependencies": {
     "liveserver": "^0.1.20",

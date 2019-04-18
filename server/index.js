@@ -1,24 +1,29 @@
+require('dotenv').config()
+
+// Packages
 const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
-require('dotenv').config()
-const axios = require('axios')
+const cookieParser = require('cookie-parser')
+const path = require('path')
 
-var path = require('path')
+// Modules
+const spotifyApiClass = require('./controllers/spotify_api')
+const userDiff = require('./controllers/userDiff')
+const calculatePoints = require('./controllers/calculate_points')
+const db = require('./controllers/database')
 
+// Express
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
-const spotifyApiClass = require('./controllers/spotify_api')
-const userDiff = require('./controllers/userDiff')
-
-const port = 5555
-
 const config = {
-  duration: 3000 // In seconds
+  port: 5555,
+  duration: 15000 // In seconds
 }
+db()
 
 app.engine(
   '.hbs',
@@ -34,6 +39,10 @@ app.use(
   express.static(path.resolve() + '/node_modules/animejs/lib/')
 )
 
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
 app.set('view engine', 'hbs')
 app.set('views', __dirname + '/views')
 
@@ -41,7 +50,7 @@ app.set('views', __dirname + '/views')
 let spotifyApi = new spotifyApiClass({
   clientId: process.env.SPOTIFY_clientId,
   clientSecret: process.env.SPOTIFY_clientSecret,
-  playlistId: '37i9dQZF1E9DQfR3vx4z4r'
+  playlistId: '1DTzz7Nh2rJBnyFbjsH1Mh'
 }).then(res => {
   console.log(chalk.yellow('Finished getting playlist'))
   // Start loop
@@ -49,16 +58,32 @@ let spotifyApi = new spotifyApiClass({
   return res
 })
 
-userDiff()
-
 // Repeatable function for getting new tracks
 const getLoopTracks = scope => {
+  // Emit old gtrack
+  app.render(
+    'partials/historySong',
+    { single: scope.currentTrack, layout: false },
+    (err, html) => {
+      console.log(html)
+      io.emit('historySong', {
+        html
+      })
+    }
+  )
+
   let newTrack = scope.getRandomTrack()
 
-  //console.log('--')
-  //console.log(chalk.cyan('Currently in scope:'))
-  //console.log(chalk.yellow(`New track: ${newTrack.track.name}`))
+  console.log('--')
+  console.log(chalk.cyan('Currently in scope:'))
+  console.log(chalk.yellow(`New track: ${newTrack.track.name}`))
+  console.log(
+    chalk.yellow(
+      `Artists: ${newTrack.track.artists.map(artist => artist.name)}`
+    )
+  )
 
+  // Emit new Track
   app.render(
     'partials/currentSong',
     { single: newTrack, layout: false },
@@ -77,10 +102,23 @@ const getLoopTracks = scope => {
 
 io.on('connection', socket => {
   console.log(chalk.blue('A user connected'))
+  let currentScore
+  let currentId
 
   socket.on('input-guess', async guessMessage => {
     scope = await spotifyApi
-    userDiff(guessMessage, scope.currentTrack)
+
+    // Check if new track, reset score
+    if (currentId !== scope.currentTrack.track.uri) {
+      currentScore = ''
+    }
+    currentId = scope.currentTrack.track.uri
+
+    currentScore = userDiff(guessMessage, scope.currentTrack, currentScore)
+
+    io.emit('score', {
+      message: calculatePoints(currentScore)
+    })
   })
 
   socket.on('disconnect', () => {
@@ -92,6 +130,14 @@ app.get('/', (req, res) => {
   res.render('index', { single: spotifyApi.randomSong })
 })
 
+app.post('/set-user', (req, res) => {
+  console.log(req.body)
+  res.cookie('userName', req.body.userName)
+  res.send({
+    status: 'done'
+  })
+})
+
 app.get('/data', async (req, res) => {
   scope = await spotifyApi
   res.send(scope.currentTrack)
@@ -101,6 +147,6 @@ app.get('/me', (req, res) => {
   res.json(spotifyApi.randomSong)
 })
 
-http.listen(port, () => {
-  console.log(chalk.blue(`Listening on port:${port}`))
+http.listen(config.port, () => {
+  console.log(chalk.blue(`Listening on port:${config.port}`))
 })

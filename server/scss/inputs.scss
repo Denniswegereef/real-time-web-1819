@@ -1,0 +1,22 @@
+form {
+  width: 100%;
+  display: flex;
+}
+input[type='text'] {
+  padding: 15px 7px;
+  width: 100%;
+  border: none;
+  background-color: var(--main-color);
+  /* Awesome styling */
+}
+
+button {
+  padding: 15px 7px;
+  color: var(--color-white);
+  background-color: var(--second-color);
+  height: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

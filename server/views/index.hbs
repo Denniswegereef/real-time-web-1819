@@ -1,21 +1,14 @@
-{{> setUserName }}
+{{#if username}}
+{{> user-info}}
+{{else}}
+{{> pop-up}}
+<script src="./js/username.js"></script>
+{{/if}}
 
-<h1>Guess the track</h1>
-
-<div id="message"></div>
-
-<div id="timer">
-    <div id="timer-inner"></div>
-</div>
 
 <div id="content">
-    Wait for the next round
+    {{!-- {{> guess-layout }} --}}
+    {{> wait-for-track }}
 </div>
 
-{{> guessInput}}
-
-<h1>Recent tracks</h1>
-<div id="history-songs"></div>
-
-<script src="js/main.js"></script>
-<script src="js/setUser.js"></script>
+<script type="module" src="js/tracks.js"></script>

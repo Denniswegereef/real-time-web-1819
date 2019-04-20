@@ -1,0 +1,24 @@
+#pop-up {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  background: rgba(black, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  #pop-up-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 200px;
+    width: 450px;
+    background-color: #fff;
+    padding: 0 4rem;
+
+    h3 {
+      text-align: center;
+    }
+  }
+}

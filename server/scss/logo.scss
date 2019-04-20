@@ -1,0 +1,23 @@
+#logo {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  h2 {
+    display: inline-block;
+    position: relative;
+    color: var(--black-color);
+    &:before {
+      content: '';
+      position: absolute;
+      height: 40px;
+      width: 100%;
+      left: 0;
+      z-index: -9;
+      top: calc(50% - 20px);
+      border: 10px solid var(--main-color);
+    }
+  }
+}

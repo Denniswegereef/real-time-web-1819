@@ -1,15 +1,12 @@
-h1 {
-  color: red;
-}
+@import 'reset';
+@import 'colors';
+@import 'base';
 
-#timer {
-  margin: 2rem 0;
-  height: 20px;
-  width: 20rem;
-  overflow: hidden;
-  &-inner {
-    height: 100%;
-    width: 100%;
-    background-color: purple;
-  }
-}
+// General styling
+@import 'logo';
+@import 'headings';
+@import 'inputs';
+
+// Components
+@import 'pop-up';
+@import 'content';

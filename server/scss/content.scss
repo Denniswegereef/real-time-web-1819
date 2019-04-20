@@ -1,0 +1,61 @@
+#content {
+  background-color: lightcyan;
+  width: 80%;
+  max-width: 900px;
+  margin: 0 auto;
+  transform: translateY(150px);
+}
+
+#wait-for-track {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &-content {
+    text-align: center;
+  }
+}
+
+#guess-content {
+  display: flex;
+  flex-direction: column;
+
+  #message-user {
+    height: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    p {
+      background-color: lightgreen;
+      display: inline-block;
+    }
+  }
+
+  #track-player {
+    width: 70%;
+    height: 120px;
+    background-color: red;
+    margin-bottom: 15px;
+  }
+
+  #track-guess {
+    height: 150px;
+    background-color: blue;
+    margin-bottom: 15px;
+  }
+
+  #extra-content {
+    display: flex;
+  }
+
+  #message-players {
+    width: 50%;
+  }
+
+  #track-history {
+    h3 {
+      text-align: right;
+    }
+    width: 50%;
+  }
+}

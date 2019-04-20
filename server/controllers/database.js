@@ -1,6 +1,7 @@
 require('dotenv').config()
-
 const firebase = require('firebase')
+const chalk = require('chalk')
+
 const db = firebase
   .initializeApp({
     apiKey: process.env.FIREBASE_apiKey,
@@ -12,14 +13,20 @@ const db = firebase
   })
   .firestore()
 
-module.exports = database = async () => {
-  db.collection('users')
-    .doc('monika')
-    .set({
-      test: 'test'
-    })
+exports.add = async name => {
+  const userRef = await db.collection('users').doc(name)
 
-  return
+  let user = await userRef.get()
+  if (user.exists) {
+    console.log(chalk.red(`user exists already: ${name}`))
+    return false
+  }
+
+  console.log(chalk.green(`User created with name: ${name}`))
+  userRef.set({
+    username: name
+  })
+  return true
 }
 
 // db.collection('users')

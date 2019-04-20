@@ -1,5 +1,6 @@
 import { animateIn } from './start-guess-animation.js'
 import { animateRepeat } from './repeat-guess-animation.js'
+import { guessTrack } from './guess-track.js'
 
 window.addEventListener('load', event => {
   const socket = io()
@@ -20,6 +21,9 @@ window.addEventListener('load', event => {
       waitForTrack.remove()
       animateIn(data.html)
       startAnimation = true
+
+      // Enable the input
+      guessTrack(socket)
       return
     }
 

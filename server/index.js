@@ -19,6 +19,7 @@ const trackLoop = require('./controllers/track_loop')
 
 // Sockets
 const guessTrackInput = require('./sockets/guess-track-input')
+const setOnline = require('./sockets/online-tracker')
 
 // Routes
 const index = require('./routes/index')
@@ -29,14 +30,14 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
 const config = {
-  port: 5555,
-  duration: 3000
+  port: 5554,
+  duration: 2000
 }
 
 // Middleware
 app.use(
   session({
-    secret: 'keyboard cat',
+    secret: process.env.SECRET_COOKIES,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false, maxAge: 365 * 24 * 60 * 60 * 1000 }
@@ -72,7 +73,7 @@ let spotifyApi = new spotifyApiClass({
   console.log(chalk.yellow('Finished getting playlist'))
   // Start loop
   trackLoop(scope, app, io, config)
-  //getLoopTracks(scope)
+
   return scope
 })
 
@@ -82,7 +83,11 @@ app.post('/set-user', setUsername)
 
 // Sockets
 io.on('connection', socket => {
-  socket.on('input-guess', data => guessTrackInput(data, io, spotifyApi, app))
+  socket.on('input-guess', data =>
+    guessTrackInput(data, io, spotifyApi, app, socket)
+  )
+
+  socket.on('im-online', username => setOnline(socket, io, username, app))
 })
 
 http.listen(config.port, () => {

@@ -1,52 +1,61 @@
+import { animateIn } from './start-guess-animation.js'
+import { animateRepeat } from './repeat-guess-animation.js'
+import { guessTrack } from './guess-track.js'
+import { animatePopUp } from './animate-pop-up.js'
+import { animateHistory } from './history-track.js'
+
 window.addEventListener('load', event => {
-  const content = document.getElementById('content')
-  const timerInner = document.getElementById('timer-inner')
-  const message = document.getElementById('message')
-  const historyBox = document.getElementById('history-songs')
-
-  const guessForm = document.getElementById('guess-form')
-  const guessInput = document.getElementById('guess-input')
-
   const socket = io()
+  const waitForTrack = document.getElementById('wait-for-track')
 
+  let startAnimation = false
+  let popUp = document.getElementById('pop-up')
+
+  // Check if there is a popup
+  if (popUp) {
+    animatePopUp()
+  }
   // Render new track
   socket.on('newTrack', data => {
-    message.innerHTML = ''
-    content.innerHTML = data.html
-    console.log('New song')
-    // Reset styling
-    timerInner.removeAttribute('style')
+    popUp = document.getElementById('pop-up')
 
-    anime({
-      targets: timerInner,
-      translateX: '-100%',
-      duration: data.config.duration,
-      easing: 'linear',
-      complete: function(anim) {
-        console.log('Done')
-      }
-    })
-  })
-
-  socket.on('score', data => {
-    message.innerHTML = `You scored ${data.message} points`
-  })
-
-  socket.on('historySong', data => {
-    let possibleItems = 4
-
-    if (historyBox.children.length > possibleItems - 1) {
-      historyBox.children[possibleItems - 1].remove()
+    if (popUp) {
+      return
     }
 
-    historyBox.insertAdjacentHTML('afterbegin', data.html)
+    // Force 1 time start animation
+    if (!startAnimation) {
+      waitForTrack.remove()
+      animateIn(data)
+
+      startAnimation = true
+
+      // Enable the input
+      guessTrack(socket)
+
+      // online from here
+      socket.emit('im-online', document.getElementById('username').innerText)
+      return
+    }
+
+    // Repeatble animation with tracks
+    animateRepeat(data)
   })
 
-  const sendMessage = event => {
-    event.preventDefault()
-    socket.emit('input-guess', guessInput.value)
-    guessInput.value = ''
-  }
+  socket.on('history-track', data => {
+    popUp = document.getElementById('pop-up')
 
-  guessForm.addEventListener('submit', sendMessage)
+    if (popUp) {
+      return
+    }
+
+    animateHistory(data.html)
+  })
+
+  socket.on('online-user', data => {
+    console.log(data.html)
+    document
+      .getElementById('current-users')
+      .insertAdjacentHTML('beforeend', data.html)
+  })
 })

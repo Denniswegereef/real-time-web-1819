@@ -1,0 +1,13 @@
+<a href="{{ track.url }}" class="history-track" target="_blank">
+    <div class="history-track-cover">
+        <img src="{{ track.albumCover.url }}" alt="{{ track.name }}">
+
+    </div>
+    <div class="history-track-info">
+        <h2>{{ track.name }}</h2>
+        <h3> {{#each track.artist}}
+            - {{this}}
+            {{/each}}
+        </h3>
+    </div>
+</a>

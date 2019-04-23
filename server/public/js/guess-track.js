@@ -3,9 +3,21 @@ let guessTrack = socket => {
   const guessInput = document.getElementById('guess-input')
   const usernameEl = document.getElementById('username')
 
+  const messageUser = document.getElementById('message-user')
+  const messagePlayers = document.getElementById('message-players')
+
   const username = usernameEl.innerText
 
   console.log(username)
+
+  socket.on('individual-message', data => {
+    messageUser.innerHTML = ''
+    messageUser.insertAdjacentHTML('beforeend', data)
+  })
+
+  socket.on('global-message', data => {
+    messagePlayers.insertAdjacentHTML('afterbegin', data)
+  })
 
   const inputGuess = event => {
     event.preventDefault()

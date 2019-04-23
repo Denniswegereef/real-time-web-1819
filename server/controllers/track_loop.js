@@ -1,16 +1,20 @@
 const chalk = require('chalk')
+const clean = require('../helpers/clean_a_track')
 
 module.exports = loop = async (scope, app, io, config) => {
   // Emit old track
-  app.render(
-    'partials/historySong',
-    { single: scope.currentTrack, layout: false },
-    (err, html) => {
-      io.emit('historySong', {
-        html
-      })
-    }
-  )
+
+  if (scope.currentTrack) {
+    app.render(
+      'partials/track-history',
+      { track: clean(scope.currentTrack), layout: false },
+      (err, html) => {
+        io.emit('history-track', {
+          html
+        })
+      }
+    )
+  }
 
   let newTrack = scope.getRandomTrack()
 

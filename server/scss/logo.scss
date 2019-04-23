@@ -5,19 +5,29 @@
   left: 0;
   right: 0;
   text-align: center;
+  z-index: 10;
+
   h2 {
+    font-size: 1.4rem;
+    padding: 1rem 0;
     display: inline-block;
     position: relative;
-    color: var(--black-color);
-    &:before {
-      content: '';
-      position: absolute;
-      height: 40px;
-      width: 100%;
-      left: 0;
-      z-index: -9;
-      top: calc(50% - 20px);
-      border: 10px solid var(--main-color);
-    }
+    color: var(--white-color);
+    @extend .gradient-text;
+    // &:before {
+    //   content: '';
+    //   position: absolute;
+    //   height: 40px;
+    //   width: 100%;
+    //   left: 0;
+    //   z-index: -9;
+    //   top: calc(50% - 20px);
+    //   border: 10px solid var(--main-color);
+    // }
   }
+}
+
+#user-info {
+  margin: 1rem 0 0 1rem;
+  color: #fff;
 }

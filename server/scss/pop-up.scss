@@ -1,24 +1,35 @@
 #pop-up {
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  background: rgba(black, 0.8);
+  background-color: var(--black-color);
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 5;
-  #pop-up-content {
+  width: 100%;
+  left: 0;
+
+  &-outer {
+    height: 250px;
+    width: 500px;
+    overflow: hidden;
+  }
+
+  &-content {
+    height: 100%;
+    width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    height: 200px;
-    width: 450px;
-    background-color: #fff;
     padding: 0 4rem;
 
     h3 {
-      text-align: center;
+      color: var(--white-color);
+      opacity: 0;
+    }
+
+    form {
+      opacity: 0;
     }
   }
 }

@@ -24,11 +24,39 @@ exports.add = async name => {
 
   console.log(chalk.green(`User created with name: ${name}`))
   userRef.set({
-    username: name
+    username: name,
+    points: 0,
+    totalGuesses: 0
   })
   return true
 }
 
+exports.updatePoints = (username, points) => {
+  const ref = db.collection('users').doc(username)
+
+  ref
+    .get()
+    .then(doc => doc.data())
+    .then(doc =>
+      ref.set(
+        {
+          totalGuesses: doc.totalGuesses ? doc.totalGuesses + 1 : 1
+        },
+        { merge: true }
+      )
+    )
+
+  return
+}
+
+exports.getUser = async username => {
+  let doc = await db
+    .collection('users')
+    .doc(username)
+    .get()
+
+  return doc.data()
+}
 // db.collection('users')
 // .doc('folkert')
 // .set({

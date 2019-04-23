@@ -9,15 +9,21 @@
 
     <div id="track-guess">
         {{> track-guess }}
+        {{> timer }}
     </div>
 
     <div id="extra-content">
-        <div id="message-players">
-            Message players
+        <div id="current-users">
+            <h3>Current users</h3>
+
         </div>
 
         <div id="track-history">
-            <h3>Recently played</h3>
+            <h3>Recent tracks</h3>
+            <div id="track-history-outer">
+                <div id="track-history-holder"></div>
+            </div>
         </div>
+    </div>
     </div>
 </section>

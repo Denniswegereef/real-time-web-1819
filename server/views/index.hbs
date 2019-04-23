@@ -1,14 +1,14 @@
 {{#if username}}
 {{> user-info}}
-{{else}}
-{{> pop-up}}
-<script src="./js/username.js"></script>
 {{/if}}
 
-
 <div id="content">
-    {{!-- {{> guess-layout }} --}}
+    {{#unless username}}
+    {{> pop-up}}
+    <script src="./js/username.js"></script>
+    {{/unless}}
+
     {{> wait-for-track }}
 </div>
 
-<script type="module" src="js/tracks.js"></script>
+<script type="module" src="js/main.js"></script>

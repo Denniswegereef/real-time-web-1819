@@ -1,0 +1,50 @@
+#track-history-outer {
+  overflow: hidden;
+  height: 300px;
+  width: 100%;
+  position: relative;
+}
+
+#track-history-holder {
+  position: absolute;
+  height: 100%;
+}
+.history-track {
+  display: flex;
+  align-items: center;
+  color: var(--white-color);
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  &-cover {
+    height: 50px;
+    width: 50px;
+    margin-right: 1rem;
+    img {
+      height: 100%;
+    }
+  }
+  &-info {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    h2 {
+      color: var(--white-color);
+      margin: 0;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      line-height: 1.2rem;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    h3 {
+      font-weight: 100;
+      color: var(--white-color);
+      margin: 0;
+      text-transform: capitalize;
+      font-size: 0.9rem;
+      line-height: 0.9rem;
+      letter-spacing: 0;
+    }
+  }
+}

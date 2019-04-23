@@ -1,18 +1,26 @@
+body {
+  background-color: var(--black-color);
+}
+
 #content {
-  background-color: lightcyan;
   width: 80%;
-  max-width: 900px;
+  max-width: 750px;
   margin: 0 auto;
-  transform: translateY(150px);
+  transform: translateY(100px);
 }
 
 #wait-for-track {
   height: 100%;
   width: 100%;
+  background-color: var(--black-color);
+  color: var(--main-color);
   display: flex;
   align-items: center;
   justify-content: center;
   &-content {
+    h3 {
+      color: var(--white-color);
+    }
     text-align: center;
   }
 }
@@ -20,42 +28,122 @@
 #guess-content {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   #message-user {
     height: 20px;
     margin-bottom: 20px;
     text-align: center;
-    p {
-      background-color: lightgreen;
-      display: inline-block;
-    }
+    color: #fff;
   }
 
   #track-player {
-    width: 70%;
+    max-width: 300px;
+    width: 100%;
+    border-bottom: 2px solid var(--white-color);
     height: 120px;
-    background-color: red;
-    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    audio {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+
+    .bars {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      max-width: 250px;
+      overflow: hidden;
+
+      span {
+        height: 50px;
+        width: 16px;
+        &:nth-child(1) {
+          background: #f79533;
+        }
+        &:nth-child(2) {
+          background: #f37055;
+        }
+        &:nth-child(3) {
+          background: #ef4e7b;
+        }
+        &:nth-child(4) {
+          background: #a166ab;
+        }
+        &:nth-child(5) {
+          background: #5073b8;
+        }
+        &:nth-child(6) {
+          background: #1098ad;
+        }
+        &:nth-child(7) {
+          background: #07b39b;
+        }
+        &:nth-child(8) {
+          background: #6fba82;
+        }
+      }
+    }
   }
 
   #track-guess {
-    height: 150px;
-    background-color: blue;
     margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h3 {
+      font-size: 1.3rem;
+      text-align: center;
+      margin: 1rem 0;
+      line-height: 23px;
+    }
+
+    button {
+      background-color: var(--black-color);
+      border: 2px solid var(--white-color);
+      &:hover {
+        background-color: var(--color-white);
+        color: var(--main-color);
+        @extend .gradient-text;
+      }
+    }
   }
 
   #extra-content {
     display: flex;
+    width: 100%;
+    margin-top: 2rem;
   }
 
-  #message-players {
-    width: 50%;
+  #current-users {
+    width: 100%;
+    margin-right: 1rem;
+
+    h3 {
+      text-align: right;
+      &:first-child {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+    }
   }
 
   #track-history {
+    width: 100%;
+    margin-left: 1rem;
     h3 {
-      text-align: right;
+      text-align: left;
+      &:first-child {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
     }
-    width: 50%;
   }
 }

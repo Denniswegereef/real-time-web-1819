@@ -8,5 +8,13 @@ h3 {
   font-size: 1.8rem;
   font-weight: bold;
   font-family: 'Work Sans', sans-serif;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  line-height: 31px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--white-color);
+}
+p {
+  font-family: 'Work Sans', sans-serif;
+  color: var(--white-color);
 }

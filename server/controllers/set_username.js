@@ -1,7 +1,18 @@
 const chalk = require('chalk')
+const db = require('../controllers/database')
 
-module.exports = setUsername = (req, res) => {
+module.exports = setUsername = async (req, res) => {
   req.session.username = req.body.username
+
+  let add = await db.add(req.body.username)
+
+  if (!add) {
+    // res.send({
+    //   message: 'Username already exists',
+    //   status: 409
+    // })
+    // return
+  }
 
   res.render(
     'partials/user-info',

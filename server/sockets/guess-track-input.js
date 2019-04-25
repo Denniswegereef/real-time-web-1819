@@ -12,13 +12,28 @@ module.exports = guessTrackInput = async (
   let currentTrack = scope.currentTrack.track.name
 
   // Here comes the guess
-  let points = matchAnswer(data)
 
-  // Add points to database
-  db.updatePoints(data.username, 1)
+  let answer = matchAnswer(data, await spotifyApi)
 
   // Send points back to players
-  io.to(socket.id).emit('individual-message', 'You did good!')
+  if (answer.points === 0) {
+    io.to(socket.id).emit(
+      'individual-message',
+      '<p><span class="error">You scored no points</span></p>'
+    )
+  } else {
+    console.log(answer)
+    app.render(
+      'partials/message-user',
+      { data: answer, layout: false },
+      (err, html) => {
+        io.to(socket.id).emit('individual-message', html)
+      }
+    )
+  }
+
+  // Add points to database
+  db.updatePoints(data.username, answer.points)
 
   // Send points back to individual socket
   io.emit('global-message', `<p>${data.username} said: ${data.value}</p>`)

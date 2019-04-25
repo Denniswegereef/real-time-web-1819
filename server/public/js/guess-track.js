@@ -12,12 +12,14 @@ let guessTrack = socket => {
 
   socket.on('individual-message', data => {
     messageUser.innerHTML = ''
+    guessInput.disabled = true
+    guessInput.placeholder = 'Already answered'
     messageUser.insertAdjacentHTML('beforeend', data)
   })
 
-  socket.on('global-message', data => {
-    messagePlayers.insertAdjacentHTML('afterbegin', data)
-  })
+  // socket.on('global-message', data => {
+  //   messagePlayers.insertAdjacentHTML('afterbegin', data)
+  // })
 
   const inputGuess = event => {
     event.preventDefault()

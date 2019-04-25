@@ -40,6 +40,7 @@ exports.updatePoints = (username, points) => {
     .then(doc =>
       ref.set(
         {
+          points: doc.points + points,
           totalGuesses: doc.totalGuesses ? doc.totalGuesses + 1 : 1
         },
         { merge: true }

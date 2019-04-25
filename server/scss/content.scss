@@ -6,7 +6,7 @@ body {
   width: 80%;
   max-width: 750px;
   margin: 0 auto;
-  transform: translateY(100px);
+  transform: translateY(80px);
 }
 
 #wait-for-track {
@@ -24,6 +24,14 @@ body {
     text-align: center;
   }
 }
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 #guess-content {
   display: flex;
@@ -31,10 +39,18 @@ body {
   align-items: center;
 
   #message-user {
-    height: 20px;
+    position: absolute;
     margin-bottom: 20px;
     text-align: center;
     color: #fff;
+    .correct-answer-show {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    p {
+      animation: fadeOut 0.5s forwards;
+      animation-delay: 4s;
+    }
   }
 
   #track-player {

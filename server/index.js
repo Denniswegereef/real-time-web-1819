@@ -31,7 +31,7 @@ const io = require('socket.io')(http)
 
 const config = {
   port: 5554,
-  duration: 15000
+  duration: 5000
 }
 
 // Middleware

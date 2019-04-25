@@ -1,15 +1,9 @@
 const animateRepeat = data => {
-  let trackPlayer = document.getElementById('track-player')
+  const trackPlayer = document.getElementById('track-player')
   trackPlayer.innerHTML = data.html.trackPlayer
 
-  // anime({
-  //   duration: data.config.duration,
-  //   targets: '.bars span',
-  //   translateY: [10, 30],
-  //   delay: anime.stagger(100),
-  //   direction: 'alternate',
-  //   loop: data.config.duration
-  // })
+  const guessContent = document.getElementById('guess-content')
+
   anime({
     duration: 450,
     targets: '.bars span',
@@ -34,6 +28,11 @@ const animateRepeat = data => {
       }
     })
   }
+
+  const guessInput = document.getElementById('guess-input')
+
+  guessInput.disabled = false
+  guessInput.placeholder = 'Answer here'
 
   return
 }

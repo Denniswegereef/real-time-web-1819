@@ -272,6 +272,18 @@ input[type='text'] {
     border: 2px solid rgba(76, 175, 80, 0);
     border-bottom: 2px solid var(--white-color);
     border-right: 2px solid var(--white-color); }
+  input[type='text']:disabled {
+    transition: all 0.7s;
+    background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    background-size: 400% auto;
+    animation: shine 10s linear infinite alternate-reverse;
+    color: #fff; }
+    input[type='text']:disabled::placeholder {
+      color: #fff; }
+
+@keyframes shine {
+  to {
+    background-position: 400% center; } }
 
 #error-username {
   position: absolute;
@@ -330,7 +342,7 @@ body {
   width: 80%;
   max-width: 750px;
   margin: 0 auto;
-  transform: translateY(100px); }
+  transform: translateY(80px); }
 
 #wait-for-track {
   height: 100%;
@@ -345,15 +357,27 @@ body {
     #wait-for-track-content h3 {
       color: var(--white-color); }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
 #guess-content {
   display: flex;
   flex-direction: column;
   align-items: center; }
   #guess-content #message-user {
-    height: 20px;
+    position: absolute;
     margin-bottom: 20px;
     text-align: center;
     color: #fff; }
+    #guess-content #message-user .correct-answer-show {
+      text-transform: uppercase;
+      font-weight: bold; }
+    #guess-content #message-user p {
+      animation: fadeOut 0.5s forwards;
+      animation-delay: 4s; }
   #guess-content #track-player {
     max-width: 300px;
     width: 100%;

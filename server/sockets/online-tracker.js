@@ -15,8 +15,6 @@ exports.addUser = async (socket, io, username, app) => {
     (err, html) => {
       // Set html to user
       onlineusers[socket.id] = html
-
-      console.log(html)
       io.emit('online-user', {
         html
       })
@@ -27,7 +25,6 @@ exports.addUser = async (socket, io, username, app) => {
 
 exports.removeUser = socket => {
   delete onlineusers[socket.id]
-  console.log(onlineusers)
   return
 }
 

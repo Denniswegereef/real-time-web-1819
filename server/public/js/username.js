@@ -17,7 +17,6 @@ window.addEventListener('load', event => {
       .then(res => res.json())
       .then(res => {
         if (res.status === 409) {
-          console.log('username already exists')
           userNameForm.insertAdjacentHTML(
             'beforebegin',
             '<p id="error-username">Username already exists</p>'

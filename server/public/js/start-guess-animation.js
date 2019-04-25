@@ -1,5 +1,4 @@
 const animateIn = data => {
-  console.log(data)
   const content = document.getElementById('content')
   content.innerHTML = data.html.layout
 

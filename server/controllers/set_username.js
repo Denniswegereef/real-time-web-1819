@@ -7,11 +7,11 @@ module.exports = setUsername = async (req, res) => {
   let add = await db.add(req.body.username)
 
   if (!add) {
-    // res.send({
-    //   message: 'Username already exists',
-    //   status: 409
-    // })
-    // return
+    res.send({
+      message: 'Username already exists',
+      status: 409
+    })
+    return
   }
 
   res.render(

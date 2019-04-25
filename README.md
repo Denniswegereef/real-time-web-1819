@@ -53,6 +53,24 @@ People can guess with the input to the track and artists, the more artists the l
 
 There is a firebase store with it to store the users, their points and their total amount of guesses for now.
 
+## Data
+
+Well, I use mostly just the regular spotify data without slicing much away. I don't expose it to the user and render every data only on the server and compile it to HTML such as:
+
+```js
+app.render(
+  'partials/track-history',
+  { track: data, layout: false },
+  (err, html) => {
+    io.emit('history-track', {
+      html
+    })
+  }
+)
+```
+
+All the avaliable spotify data can ben found at [the spotify web-api reference](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/).
+
 ## Future ideas
 
 - [ ] Multiple room support for different genres

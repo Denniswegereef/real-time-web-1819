@@ -24,7 +24,6 @@ module.exports = handle = (data, spotifyObj) => {
   // Check title
 
   if (inputValue.includes(currenTitle)) {
-    console.log(chalk.red(currenTitle))
     points += 10
     correctAnswers.push(currenTitle)
     inputValue = inputValue.replace(currenTitle, '')
@@ -35,7 +34,6 @@ module.exports = handle = (data, spotifyObj) => {
       points += artistPoints
       inputValue = inputValue.replace(artist, '')
       correctAnswers.push(artist)
-      console.log(chalk.red(artist))
     }
   })
 

@@ -60,7 +60,6 @@ window.addEventListener('load', event => {
   })
 
   socket.on('online-user', data => {
-    console.log(data.html)
     document
       .getElementById('current-users')
       .insertAdjacentHTML('beforeend', data.html)

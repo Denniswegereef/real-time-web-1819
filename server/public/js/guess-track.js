@@ -24,8 +24,6 @@ let guessTrack = socket => {
   const inputGuess = event => {
     event.preventDefault()
 
-    console.log(guessInput.value)
-
     socket.emit('input-guess', {
       username,
       value: guessInput.value

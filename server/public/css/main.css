@@ -415,12 +415,11 @@ body {
     margin-top: 2rem; }
   #guess-content #current-users {
     width: 100%;
-    margin-right: 1rem; }
-    #guess-content #current-users h3 {
-      text-align: right; }
-      #guess-content #current-users h3:first-child {
-        font-size: 1.3rem;
-        margin-bottom: 1rem; }
+    margin-right: 1rem;
+    text-align: right; }
+    #guess-content #current-users h3:first-child {
+      font-size: 1.3rem;
+      margin-bottom: 1rem; }
   #guess-content #track-history {
     width: 100%;
     margin-left: 1rem; }

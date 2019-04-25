@@ -19,7 +19,7 @@ const trackLoop = require('./controllers/track_loop')
 
 // Sockets
 const guessTrackInput = require('./sockets/guess-track-input')
-const setOnline = require('./sockets/online-tracker')
+const online = require('./sockets/online-tracker')
 
 // Routes
 const index = require('./routes/index')
@@ -31,7 +31,7 @@ const io = require('socket.io')(http)
 
 const config = {
   port: 5554,
-  duration: 2000
+  duration: 15000
 }
 
 // Middleware
@@ -87,7 +87,12 @@ io.on('connection', socket => {
     guessTrackInput(data, io, spotifyApi, app, socket)
   )
 
-  socket.on('im-online', username => setOnline(socket, io, username, app))
+  socket.on('im-online', username => online.addUser(socket, io, username, app))
+  socket.on('get-online-users', username => online.getAll(io, app))
+
+  socket.on('disconnect', () => {
+    online.removeUser(socket)
+  })
 })
 
 http.listen(config.port, () => {

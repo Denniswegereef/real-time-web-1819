@@ -35,6 +35,13 @@ window.addEventListener('load', event => {
 
       // online from here
       socket.emit('im-online', document.getElementById('username').innerText)
+      socket.emit('get-online-users', true)
+
+      socket.on('all-online', data => {
+        document
+          .getElementById('current-users')
+          .insertAdjacentHTML('beforeend', data)
+      })
       return
     }
 

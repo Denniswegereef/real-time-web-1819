@@ -1,60 +1,63 @@
-# Real-Time Web @cmda-minor-web · 2018-2019
+# Guess the track
 
-During this course you will learn how to build a **meaningful** real-time application. You will learn techniques to setup an open connection between the client and the server. This will enable you to send data in real-time both ways, at the same time.
+## Guess the track
 
-## Goals
-- _Deal with real-time complexity_
-- _Handle real-time client-server interaction_
-- _Handle real-time data management_
-- _Handle multi-user support_
+Guess is a quiz-a-like game where every 25 seconds a new song comes and you have to guess it, beating the other onlne players. Test your knowledge of music.
 
-[Rubric][rubric]
+How faster you are the more points you can earn. It is build with a stack of express, socket.io, handlebars and firebase.
 
-## Curriculum
+## Challanges
 
-### Week 1 - Hello Server
+Well the big challange was to get the correct data flow, because so many things are happening at the same time. Also you have to give constant feedback to the users and load in data on the right moment. Data is changing very quickly and the whole app have to react to that.
 
-Goal: Build and deploy a unique barebone real-time app  
+But you don't want things that they are depending on eachother, no spaghetti code.
 
-[Exercises](https://github.com/cmda-minor-web/real-time-web-1819/blob/master/week-1.md)    
-[Slides](https://docs.google.com/presentation/d/1EVsEFgBnG699nce058ss_PkVJROQXDp5wJJ-IRXvzTA/edit?usp=sharing)  
+It took several iterations to get it right but the current flow looks like this.
 
+![flowchart)](flowchart.png)
 
-### Week 2 - Sharing is caring  
+## Install
 
-Goal: Store, manipulate and share data between server-client   
+1. Clone the project
 
-[Exercises](https://github.com/cmda-minor-web/real-time-web-1819/blob/master/week-2.md)    
-[Slides](https://docs.google.com/presentation/d/1woKoY59D8Zcttna0FzfNjEtGtT8oXWi9b5LYlukRISM/edit?usp=sharing)
+2. First you need some things to set up, create a `.env` file and create a [firebase database](https://firebase.google.com/) and sign up for the [spotify api](https://developer.spotify.com/documentation/web-api/).
 
+3. Fill up the .env with all correct keys and url's, the secret cookie can be everything :)
 
-### Week 3 - Let’s take this show on the road 
+```
+SPOTIFY_clientId=
+SPOTIFY_clientSecret=
 
-Goal: Handle data sharing and multi-user support 
+SECRET_COOKIES=
 
-[Exercises](https://github.com/cmda-minor-web/real-time-web-1819/blob/master/week-3.md)  
-[Slides](https://docs.google.com/presentation/d/1SHofRYg87bhdqhv7DQb_HZMbW7Iq1PtqxpdtZHMbMmk/edit?usp=sharing)
+FIREBASE_apiKeyAIzaSyAjr1Nz7uaHHcokei5rXBKTMpLJfbFFjyU
+FIREBASE_authDomain=
+FIREBASE_databaseURL=
+FIREBASE_propjectId=
+FIREBASE_messagingSenderId=
+```
 
-> If you're seeing this message on a forked repo, it means one of our students hasn't changed the description yet 😈
+4. Than run `npm install` to install all the packages
 
-<!-- Add a link to your live demo in Github Pages 🌐-->
+5. `npm run watch` to view online at `localhost:5554`
 
-<!-- ☝️ replace this description with a description of your own work -->
+## How to use
 
-<!-- Add a nice image here at the end of the week, showing off your shiny frontend 📸 -->
+Well a-lot is happening, it is a is [isomorphic app](https://www.lullabot.com/articles/what-is-an-isomorphic-application). In the page request first renders only the layout, than afterwards all the HTML will be rendered on the server and will be injected inside the DOM where it needs to be.
 
-<!-- Maybe a table of contents here? 📚 -->
+The main part of this app is the class called `spotifyApiClass`. It creates one time only a token to fetch all the tracks in the playlist wiht a cool smart recursive loop. You also have to give it a playstlist URL from spotify and it fetches all the tracks, filtering it where previews are avaliable and gives a random track on command. When you ask a random track it stores all the tracks in a cache and you can't have duplicates till every track is used.
 
-<!-- How about a section that describes how to install this project? 🤓 -->
+There is a track loop what every 25 seconds gives to every playing user a rendered html block served with websockets. So everybody will get the same track on the same moment.
 
-<!-- ...but how does one use this project? What are its features 🤔 -->
+People can guess with the input to the track and artists, the more artists the less points each they give. I use a small package called [string-similarity](https://www.npmjs.com/package/string-similarity) to match the answer, so when you type `Ed sheran` instead of `Ed Sheeran` you still get points but for the fault in your answer a little less points.
 
-<!-- What external data source is featured in your project and what are its properties 🌠 -->
+There is a firebase store with it to store the users, their points and their total amount of guesses for now.
 
-<!-- This would be a good place for your data life cycle ♻️-->
+## Future ideas
 
-<!-- Maybe a checklist of done stuff and stuff still on your wishlist? ✅ -->
-
-<!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
-
-[rubric]: https://docs.google.com/spreadsheets/d/e/2PACX-1vSd1I4ma8R5mtVMyrbp6PA2qEInWiOialK9Fr2orD3afUBqOyvTg_JaQZ6-P4YGURI-eA7PoHT8TRge/pubhtml
+- [ ] Multiple room support for different genres
+- [ ] Players can create their own rooms
+- [ ] Players can create a password for their room
+- [ ] Save how many times a song is guessed
+- [ ] More animation, smoother experience
+- [ ] Working equalizer based on the current track

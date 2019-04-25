@@ -1,6 +1,8 @@
 const db = require('../controllers/database')
 
-module.exports = track = async (socket, io, username, app) => {
+let onlineusers = {}
+
+exports.addUser = async (socket, io, username, app) => {
   console.log(socket.id + ' just came online with a name ' + username)
   let data = await db.getUser(username)
 
@@ -11,6 +13,9 @@ module.exports = track = async (socket, io, username, app) => {
       layout: false
     },
     (err, html) => {
+      // Set html to user
+      onlineusers[socket.id] = html
+
       console.log(html)
       io.emit('online-user', {
         html
@@ -18,4 +23,14 @@ module.exports = track = async (socket, io, username, app) => {
     }
   )
   return
+}
+
+exports.removeUser = socket => {
+  delete onlineusers[socket.id]
+  console.log(onlineusers)
+  return
+}
+
+exports.getAll = (io, app) => {
+  io.emit('all-online', Object.values(onlineusers).join(''))
 }

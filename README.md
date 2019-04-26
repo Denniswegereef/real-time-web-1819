@@ -49,9 +49,15 @@ The main part of this app is the class called `spotifyApiClass`. It creates one 
 
 There is a track loop what every 25 seconds gives to every playing user a rendered html block served with websockets. So everybody will get the same track on the same moment.
 
+**Currently disabled**
+
 People can guess with the input to the track and artists, the more artists the less points each they give. I use a small package called [string-similarity](https://www.npmjs.com/package/string-similarity) to match the answer, so when you type `Ed sheran` instead of `Ed Sheeran` you still get points but for the fault in your answer a little less points.
 
-There is a firebase store with it to store the users, their points and their total amount of guesses for now.
+Well for now this approach doesn't work with such edge cases. Let's the current track is `Frank Ocean - solo`. If people just type out Frank Ocean it works fine, but if they guess the whole answer in 1 time. The approach doesn't work.
+
+So currently now you have only 1 guess, and you have to get it **right**. The mini algoritm check for every possible case and assigns points based on what was correctly in the string.
+
+There is a firebase store with it to store the users,their points and their total amount of guesses for now.
 
 ## Data
 
@@ -73,6 +79,11 @@ All the avaliable spotify data can ben found at [the spotify web-api reference](
 
 ## Future ideas
 
+- [ ] Leaderboards (most points, guesses etc.)
+- [ ] Keep track of more statics
+- [ ] A better way of keeping track who's online
+- [ ] Dedicated log-in system
+- [ ] People can use their spotify account to log-in
 - [ ] Multiple room support for different genres
 - [ ] Players can create their own rooms
 - [ ] Players can create a password for their room

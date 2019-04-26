@@ -68,7 +68,7 @@ app.set('views', __dirname + '/views')
 let spotifyApi = new spotifyApiClass({
   clientId: process.env.SPOTIFY_clientId,
   clientSecret: process.env.SPOTIFY_clientSecret,
-  playlistId: '3WFMtlxT9NW5rgkZCpbxKG'
+  playlistId: '1DTzz7Nh2rJBnyFbjsH1Mh'
 }).then(scope => {
   console.log(chalk.yellow('Finished getting playlist'))
   // Start loop
